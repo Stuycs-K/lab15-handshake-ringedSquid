@@ -30,9 +30,13 @@ int server_setup() {
   returns the file descriptor for the upstream pipe (see server setup).
   =========================*/
 int server_handshake(int *to_client) {
-  int from_client;
+  int from_client = server_setup();
+  //Read in name of private pipe
+  if (read(from_client, to_client, sizeof(int)) == -1) {
+	  fprintf(stderr, "%s\n", strerror(errno));
+  }
   int rand = (int)random();
-  if (write(to_client) == -1) {
+  if (write() == -1) {
 	  fprintf(stderr, "%s\n", strerror(errno));
   }
   return from_client;
