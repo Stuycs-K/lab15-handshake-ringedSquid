@@ -10,8 +10,14 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
-  int from_client = 0;
-  return from_client;
+	int from_client;
+	//make pipe
+	mkfifo(WKP, 0666);
+	//Wait for pipe
+	from_client = open(WKP, O_RDONLY);
+	//Delete pipe once connection is made
+	unlink(WKP);
+	return from_client;
 }
 
 /*=========================
@@ -25,6 +31,10 @@ int server_setup() {
   =========================*/
 int server_handshake(int *to_client) {
   int from_client;
+  int rand = (int)random();
+  if (write(to_client) == -1) {
+	  fprintf(stderr, "%s\n", strerror(errno));
+  }
   return from_client;
 }
 
@@ -40,6 +50,7 @@ int server_handshake(int *to_client) {
   =========================*/
 int client_handshake(int *to_server) {
   int from_server;
+
   return from_server;
 }
 
