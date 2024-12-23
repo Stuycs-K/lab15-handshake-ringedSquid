@@ -86,7 +86,7 @@ int client_handshake(int *to_server) {
 	char path[255];
 	sprintf(path, "%d", getpid());
 	debug("Creating PP...", 0);
-	mkfifo(path);
+	mkfifo(path, 0666);
 	debug("Opening WKP...", 0);
 	*to_server = open(WKP, O_WRONLY);
 	debug("Sending SYN...", 0);
@@ -97,7 +97,7 @@ int client_handshake(int *to_server) {
 	debug("SYN_ACK Received! Sending ACK...", 0);
 	read(from_server, &rand, sizeof(int));
 	rand++;
-	write(*to_server, path, 255);
+	write(*to_server, &rand, sizeof(int));
 	debug("Removing PP...", 0);
 	remove(path);
 	return from_server;
