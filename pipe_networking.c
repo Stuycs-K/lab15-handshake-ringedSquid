@@ -94,11 +94,11 @@ int client_handshake(int *to_server) {
 	debug("Waiting for SYN_ACK...", 0);
 	from_server = open(path, O_RDONLY);
 	int rand;
-	debug("SYN_ACK Received! Sending ACK...", 0);
 	read(from_server, &rand, sizeof(int));
+	debug("SYN_ACK Received! Removing PP...", 0);
+	remove(path);
+	debug("Sending ACK...", 0);
 	rand++;
 	write(*to_server, &rand, sizeof(int));
-	debug("Removing PP...", 0);
-	remove(path);
 	return from_server;
 }

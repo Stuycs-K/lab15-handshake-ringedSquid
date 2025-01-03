@@ -6,4 +6,9 @@ int main() {
   int from_server;
 
   from_server = client_handshake( &to_server );
+  while (1) {
+	  int num;
+	  read(from_server, &num, sizeof(int));
+	  printf("CLIENT (%d) : %d\n", getpid(), num);
+  }
 }
