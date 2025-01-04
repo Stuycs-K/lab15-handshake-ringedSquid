@@ -3,6 +3,11 @@
 #include <time.h>
 #include "pipe_networking.h"
 
+void sighandle(int signo) {
+	remove(WKP);
+	exit(0);
+}
+
 int main() {
   int to_client;
   int from_client;
