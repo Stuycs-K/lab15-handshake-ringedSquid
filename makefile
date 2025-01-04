@@ -1,12 +1,16 @@
-all: client server pserver
-client: basic_client.o pipe_networking.o
-	@gcc -o client basic_client.o pipe_networking.o
+compile: client server
 
-server: basic_server.o pipe_networking.o
-	@gcc -o server basic_server.o pipe_networking.o
+client: forking_client.o pipe_networking.o
+	@gcc -o client forking_client.o pipe_networking.o
 
-pserver: persistant_server.o pipe_networking.o
-	@gcc -o pserver persistant_server.o pipe_networking.o
+server: forking_server.o pipe_networking.o
+	@gcc -o server forking_server.o pipe_networking.o
+
+forking_client.o: forking_client.c pipe_networking.h
+	@gcc -c forking_client.c
+
+forking_server.o: forking_server.c pipe_networking.h
+	@gcc -c forking_server.c
 
 persistant_server.o: persistant_server.c pipe_networking.h
 	@gcc -c persistant_server.c
@@ -23,6 +27,4 @@ pipe_networking.o: pipe_networking.c pipe_networking.h
 clean:
 	@rm client
 	@rm server
-	@rm pserver
-	@rm mario
 	@rm *.o

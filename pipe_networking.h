@@ -28,5 +28,6 @@ int client_handshake(int *to_server);
 
 //for forking server
 int server_setup();
+int server_handshake_half(int *to_client, int from_client);
 
 #endif

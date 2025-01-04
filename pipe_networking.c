@@ -71,6 +71,30 @@ int server_handshake(int *to_client) {
   return from_client;
 }
 
+int server_handshake_half(int *to_client, int from_client) {
+  char buff[255];
+  //Read in name of private pipe, receive SYN
+  debug("Getting PP...", 1);
+  read(from_client, buff, 255);
+  debug("Opening PP...", 1);
+  *to_client = open(buff, O_WRONLY);
+  //Write to the private pipe, SYN_ACK
+  int rand = (int)random();	  
+  int rand2;
+  debug("Sending SYN_ACK...", 1);
+  write(*to_client, &rand, sizeof(int));
+  debug("Waiting for ACK...", 1);
+  read(from_client, &rand2, sizeof(int));
+  if (rand2 == (rand+1)) {
+	  debug("ACK received!", 1);
+  }
+  else {
+	  debug("Error with ACK...", 1);
+	  return 0;
+  }
+  return 1;
+}
+
 
 /*=========================
   client_handshake
