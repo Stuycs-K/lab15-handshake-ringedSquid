@@ -2,6 +2,9 @@
 
 void debug(char* s, int type) {
 	if (DEBUG) {
+		if (type == 2) {
+			printf("SUBSERVER (%d) : ", getpid());
+		}
 		//server
 		if (type == 1) {
 			printf("SERVER (%d) : ", getpid());
@@ -74,22 +77,22 @@ int server_handshake(int *to_client) {
 int server_handshake_half(int *to_client, int from_client) {
   char buff[255];
   //Read in name of private pipe, receive SYN
-  debug("Getting PP...", 1);
+  debug("Getting PP...", 2);
   read(from_client, buff, 255);
-  debug("Opening PP...", 1);
+  debug("Opening PP...", 2);
   *to_client = open(buff, O_WRONLY);
   //Write to the private pipe, SYN_ACK
   int rand = (int)random();	  
   int rand2;
-  debug("Sending SYN_ACK...", 1);
+  debug("Sending SYN_ACK...", 2);
   write(*to_client, &rand, sizeof(int));
-  debug("Waiting for ACK...", 1);
+  debug("Waiting for ACK...", 2);
   read(from_client, &rand2, sizeof(int));
   if (rand2 == (rand+1)) {
-	  debug("ACK received!", 1);
+	  debug("ACK received!", 2);
   }
   else {
-	  debug("Error with ACK...", 1);
+	  debug("Error with ACK...", 2);
 	  return 0;
   }
   return 1;

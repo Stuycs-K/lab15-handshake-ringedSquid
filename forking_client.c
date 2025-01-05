@@ -1,6 +1,7 @@
 #include "pipe_networking.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
 #include <string.h>
 
 int main() {
@@ -18,7 +19,7 @@ int main() {
 		  if (read(from_server, response, 512) < 0) {
 			  exit(0);
 		  }
-		  printf("CLIENT (%d) : From Server: %s\n", getpid(), response);
+		  printf("SERVER C(%d): %s\n", getpid(), response);
 	  }
   }
 }
